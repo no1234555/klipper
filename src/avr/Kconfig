@@ -10,8 +10,8 @@ config AVR_SELECT
     select HAVE_GPIO_SPI
     select HAVE_GPIO_I2C
     select HAVE_GPIO_HARD_PWM
-    select HAVE_GPIO_BITBANGING if !MACH_atmega168
     select HAVE_STRICT_TIMING
+    select HAVE_LIMITED_CODE_SIZE if MACH_atmega168
 
 config BOARD_DIRECTORY
     string
@@ -76,6 +76,14 @@ config CLOCK_FREQ
     default 8000000 if AVR_FREQ_8000000
     default 20000000 if AVR_FREQ_20000000
     default 16000000
+
+config FLASH_SIZE
+    hex
+    default 0x4000 if MACH_atmega168
+    default 0x8000 if MACH_atmega328 || MACH_atmega328p || MACH_atmega32u4
+    default 0x10000 if MACH_atmega644p || MACH_at90usb646
+    default 0x20000 if MACH_atmega1280 || MACH_atmega1284p || MACH_at90usb1286
+    default 0x40000 if MACH_atmega2560
 
 config CLEAR_PRESCALER
     bool "Manually clear the CPU prescaler field at startup" if LOW_LEVEL_OPTIONS
